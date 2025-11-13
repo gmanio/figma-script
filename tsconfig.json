@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // 최신 ECMAScript 버전 사용
+    "module": "ESNext", // 최신 모듈 시스템 사용
+    "lib": ["ESNext", "DOM"], // ESNext 기능과 DOM 타입 정의 포함
+    "outDir": "./dist", // 컴파일된 파일은 ./dist에 저장
+    "rootDir": "./src", // 소스 파일은 ./src에 위치
+    "strict": true, // 엄격한 타입 검사 활성화
+    "esModuleInterop": true, // CommonJS 모듈과의 상호 운용성 향상
+    "skipLibCheck": true, // 라이브러리 파일의 타입 검사 건너뛰기
+    "forceConsistentCasingInFileNames": true, // 파일명 대소문자 일관성 강제
+    "sourceMap": true // 디버깅을 위해 소스맵 생성
+  },
+  "include": ["src/**/*"], // ./src 폴더 내 모든 파일 포함
+  "exclude": ["node_modules"] // node_modules 폴더 제외
+}
