@@ -11,7 +11,8 @@
     "forceConsistentCasingInFileNames": true, // 파일명 대소문자 일관성 강제
     "sourceMap": true, // 디버깅을 위해 소스맵 생성
     "declaration": true, // 선언 파일 생성
-    "declarationMap": true // 선언 파일 맵 생성
+    "declarationMap": true, // 선언 파일 맵 생성
+    "types": ["./src/window.d.ts"]
   },
   "include": ["src/**/*"], // ./src 폴더 내 모든 파일 포함
   "exclude": ["node_modules"] // node_modules 폴더 제외
