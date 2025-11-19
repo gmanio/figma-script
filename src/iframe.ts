@@ -1,11 +1,23 @@
+// iframe.ts
+// this file is used to send and receive messages between the iframe and the parent window
+
 window.iframePort = null;
 
 document.addEventListener("load", () => {
   sendIframeHeight();
 });
 
-document.addEventListener("load", () => {
+document.addEventListener("resize", () => {
   sendIframeHeight();
+});
+
+// initialize iframe port shake
+window.addEventListener("message", (event: MessageEvent) => {
+  if (event.data === "init" && event.ports.length > 0) {
+    window.iframePort = event.ports[0];
+    // Now the iframe can use iframePort to send and receive messages
+    window.iframePort.onmessage = onMessage;
+  }
 });
 
 const sendIframeHeight = () => {
@@ -42,14 +54,6 @@ const sendReplacePathname = (pathname: string) => {
     data: { pathname },
   } as Partial<PostMessageEventData>);
 };
-
-window.addEventListener("message", (event: MessageEvent) => {
-  if (event.data === "init" && event.ports.length > 0) {
-    window.iframePort = event.ports[0];
-    // Now the iframe can use iframePort to send and receive messages
-    window.iframePort.onmessage = onMessage;
-  }
-});
 
 // Handle messages received on port2
 function onMessage(event: MessageEvent) {
