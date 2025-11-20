@@ -3,14 +3,6 @@
 
 window.iframePort = null;
 
-document.addEventListener("load", () => {
-  sendIframeHeight();
-});
-
-document.addEventListener("resize", () => {
-  sendIframeHeight();
-});
-
 // initialize iframe port shake
 window.addEventListener("message", (event: MessageEvent) => {
   if (event.data === "init" && event.ports.length > 0) {
@@ -18,6 +10,14 @@ window.addEventListener("message", (event: MessageEvent) => {
     // Now the iframe can use iframePort to send and receive messages
     window.iframePort.onmessage = onMessage;
   }
+});
+
+window.addEventListener("load", () => {
+  sendIframeHeight();
+});
+
+window.addEventListener("resize", () => {
+  sendIframeHeight();
 });
 
 const sendIframeHeight = () => {
@@ -29,7 +29,7 @@ const sendIframeHeight = () => {
   window.iframePort.postMessage({
     type: "setIframeHeight",
     data: {
-      height: container && Number((container as HTMLElement).dataset.height),
+      height: container && Number((container as HTMLElement).offsetHeight),
     },
   } as Partial<PostMessageEventData>);
 };
