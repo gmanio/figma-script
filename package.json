@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
+    "gh-pages": "6.3.0",
     "typescript": "5.9.3"
   }
 }
