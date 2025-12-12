@@ -1,11 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    TEST
+    <!-- React 앱이 렌더링될 DOM 요소 -->
+    <div id="root"></div>
+
+    <!-- 1. React 라이브러리 CDN 추가 -->
+    <script crossorigin src="unpkg.com"></script>
+    <!-- 2. ReactDOM 라이브러리 CDN 추가 -->
+    <script crossorigin src="unpkg.com"></script>
+    <!-- 3. Babel CDN 추가 (JSX를 JS로 변환) -->
+    <script src="unpkg.com"></script>
+
+    <!-- 4. 애플리케이션 로직 (type="text/babel" 설정 필수) -->
+    <script type="text/babel">
+        // React 컴포넌트 정의
+        function App() {
+            return <h1>Hello, React with CDN!</h1>;
+        }
+
+        // 컴포넌트를 root div에 렌더링
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
 </body>
 </html>

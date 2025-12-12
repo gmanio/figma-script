@@ -4,7 +4,7 @@
 window.iframePort = null;
 // initialize iframe port shake
 window.addEventListener("message", (event) => {
-    if (event.data === "init" && event.ports.length > 0) {
+    if (event.data === ACTION_TYPES.HANDSHAKE && event.ports.length > 0) {
         window.iframePort = event.ports[0];
         // Now the iframe can use iframePort to send and receive messages
         window.iframePort.onmessage = onMessage;
@@ -21,10 +21,11 @@ const sendIframeHeight = () => {
         return;
     }
     const container = document.querySelector("[data-height]") || null;
+    const setIframeHeight = Math.max(Number(container.dataset.height ?? 0), Number(container.offsetHeight));
     window.iframePort.postMessage({
-        type: "setIframeHeight",
+        type: ACTION_TYPES.SET_IFRAME_HEIGHT,
         data: {
-            height: container && Number(container.offsetHeight),
+            height: setIframeHeight,
         },
     });
 };
@@ -33,7 +34,7 @@ const sendRoutePathname = (pathname) => {
         return;
     }
     window.iframePort.postMessage({
-        type: "route",
+        type: ACTION_TYPES.ROUTE,
         data: { pathname },
     });
 };
@@ -42,7 +43,7 @@ const sendReplacePathname = (pathname) => {
         return;
     }
     window.iframePort.postMessage({
-        type: "replace",
+        type: ACTION_TYPES.REPLACE,
         data: { pathname },
     });
 };
@@ -54,7 +55,7 @@ function onMessage(event) {
         return;
     }
     switch (messageEventData.type) {
-        case "getIframeHeight":
+        case ACTION_TYPES.GET_IFRAME_HEIGHT:
             sendIframeHeight();
             break;
         default:
@@ -62,4 +63,11 @@ function onMessage(event) {
             break;
     }
 }
+const ACTION_TYPES = {
+    HANDSHAKE: "init",
+    GET_IFRAME_HEIGHT: "getIframeHeight",
+    SET_IFRAME_HEIGHT: "setIframeHeight",
+    ROUTE: "route",
+    REPLACE: "replace",
+};
 //# sourceMappingURL=iframe.js.map

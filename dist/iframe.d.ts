@@ -34,4 +34,11 @@ type PostMessageEventDataType = {
         };
     };
 };
+declare const ACTION_TYPES: {
+    readonly HANDSHAKE: "init";
+    readonly GET_IFRAME_HEIGHT: "getIframeHeight";
+    readonly SET_IFRAME_HEIGHT: "setIframeHeight";
+    readonly ROUTE: "route";
+    readonly REPLACE: "replace";
+};
 //# sourceMappingURL=iframe.d.ts.map

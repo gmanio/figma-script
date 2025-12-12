@@ -1,22 +1,36 @@
+export const ACTION_TYPES = {
+  HANDSHAKE: "init",
+  GET_IFRAME_HEIGHT: "getIframeHeight",
+  SET_IFRAME_HEIGHT: "setIframeHeight",
+  ROUTE: "route",
+  REPLACE: "replace",
+} as const;
+
+export const WINDOW_EVENTS = {
+  LOAD: "load",
+  RESIZE: "resize",
+  MESSAGE: "message",
+} as const;
+
 // iframe.ts
 // this file is used to send and receive messages between the iframe and the parent window
 
 window.iframePort = null;
 
 // initialize iframe port shake
-window.addEventListener("message", (event: MessageEvent) => {
-  if (event.data === "init" && event.ports.length > 0) {
+window.addEventListener(WINDOW_EVENTS.MESSAGE, (event: MessageEvent) => {
+  if (event.data === ACTION_TYPES.HANDSHAKE && event.ports.length > 0) {
     window.iframePort = event.ports[0];
     // Now the iframe can use iframePort to send and receive messages
     window.iframePort.onmessage = onMessage;
   }
 });
 
-window.addEventListener("load", () => {
+window.addEventListener(WINDOW_EVENTS.LOAD, () => {
   sendIframeHeight();
 });
 
-window.addEventListener("resize", () => {
+window.addEventListener(WINDOW_EVENTS.RESIZE, () => {
   sendIframeHeight();
 });
 
@@ -26,10 +40,15 @@ const sendIframeHeight = () => {
   }
 
   const container = document.querySelector("[data-height]") || null;
+  const setIframeHeight = Math.max(
+    Number((container as HTMLElement).dataset.height ?? 0),
+    Number((container as HTMLElement).offsetHeight)
+  );
+
   window.iframePort.postMessage({
-    type: "setIframeHeight",
+    type: ACTION_TYPES.SET_IFRAME_HEIGHT,
     data: {
-      height: container && Number((container as HTMLElement).offsetHeight),
+      height: setIframeHeight,
     },
   } as Partial<PostMessageEventData>);
 };
@@ -40,7 +59,7 @@ const sendRoutePathname = (pathname: string) => {
   }
 
   window.iframePort.postMessage({
-    type: "route",
+    type: ACTION_TYPES.ROUTE,
     data: { pathname },
   } as Partial<PostMessageEventData>);
 };
@@ -50,7 +69,7 @@ const sendReplacePathname = (pathname: string) => {
     return;
   }
   window.iframePort.postMessage({
-    type: "replace",
+    type: ACTION_TYPES.REPLACE,
     data: { pathname },
   } as Partial<PostMessageEventData>);
 };
@@ -65,7 +84,7 @@ function onMessage(event: MessageEvent) {
   }
 
   switch (messageEventData.type) {
-    case "getIframeHeight":
+    case ACTION_TYPES.GET_IFRAME_HEIGHT:
       sendIframeHeight();
       break;
     default:
@@ -85,7 +104,7 @@ type PostMessageEventData = {
 };
 
 type ReceiveMessageEventDataTypes = {
-  getIframeHeight: {
+  [ACTION_TYPES.GET_IFRAME_HEIGHT]: {
     data: {
       height: number;
     };
